@@ -1,0 +1,42 @@
+# ==============================
+# Main Project .gitignore
+# ==============================
+
+# --- OS-specific ---
+.DS_Store
+Thumbs.db
+
+# ---To Do List Backend (Spring Boot) ---
+HELP.md
+todoAppBackend/target/
+todoAppBackend/.mvn/wrapper/maven-wrapper.jar
+!todoAppBackend/**/src/main/**/target/
+!todoAppBackend/**/src/test/**/target/
+
+### STS ###
+todoAppBackend/.apt_generated
+todoAppBackend/.classpath
+todoAppBackend/.factorypath
+todoAppBackend/.project
+todoAppBackend/.settings
+todoAppBackend/.springBeans
+todoAppBackend/.sts4-cache
+
+### IntelliJ IDEA ###
+todoAppBackend/.idea
+todoAppBackend/*.iws
+todoAppBackend/*.iml
+todoAppBackend/*.ipr
+
+### NetBeans ###
+todoAppBackend/nbproject/private/
+todoAppBackend/nbbuild/
+todoAppBackend/dist/
+todoAppBackend/nbdist/
+todoAppBackend/.nb-gradle/
+todoAppBackend/build/
+!todoAppBackend/**/src/main/**/build/
+!todoAppBackend/**/src/test/**/build/
+
+### VS Code ###
+todoAppBackend/.vscode/
