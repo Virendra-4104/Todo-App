@@ -1,0 +1,61 @@
+package com.todoapp.todoAppBackend.service;
+
+import com.todoapp.todoAppBackend.entity.User;
+import com.todoapp.todoAppBackend.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class UserService {
+
+    @Autowired
+    private UserRepository userRepository;
+
+    //    create account
+    public void createAccount(User registerRequest) {
+        String username = registerRequest.getUsername() != null ? registerRequest.getUsername().trim() : "";
+        String password = registerRequest.getPassword() != null ? registerRequest.getPassword().trim() : "";
+        if (registerRequest.getUsername().trim().isEmpty() && registerRequest.getPassword().trim().isEmpty()) {
+            throw new IllegalArgumentException("Username or Password can't be empty");
+        }
+        if (userRepository.existsByUsername(registerRequest.getUsername())) {
+            throw new IllegalArgumentException("Username already exists");
+        }
+        registerRequest.setUsername(username);
+        registerRequest.setPassword(password);
+        userRepository.save(registerRequest);
+    }
+
+    //    login
+    public User loginAccount(User loginRequest) {
+        if (loginRequest.getUsername().trim().isEmpty() && loginRequest.getPassword().trim().isEmpty()) {
+            throw new IllegalArgumentException("Username or Password can't be empty");
+        }
+        User user =userRepository.findByUsername(loginRequest.getUsername()).orElseThrow(() -> new IllegalArgumentException("User not found"));
+        if (!loginRequest.getPassword().equals(user.getPassword())){
+            throw new IllegalArgumentException("Password is wrong");
+        }
+        return user;
+    }
+
+    //    update user
+    public User updateAccount(String username, User updateRequest) {
+        User oldUser = userRepository.findByUsername(username.trim())
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        if (updateRequest.getUsername() != null) {
+            oldUser.setUsername(!updateRequest.getUsername().trim().isEmpty() ? updateRequest.getUsername().trim() : oldUser.getUsername());
+        }
+        if (updateRequest.getPassword() != null) {
+            oldUser.setPassword(!updateRequest.getPassword().trim().isEmpty() ? updateRequest.getPassword().trim() : oldUser.getPassword());
+        }
+        userRepository.save(oldUser);
+        return oldUser;
+    }
+
+//    delete account
+    public void deleteAccount(String username){
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        userRepository.delete(user);
+    }
+}
