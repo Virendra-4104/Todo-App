@@ -1,15 +1,20 @@
 package com.todoapp.todoAppBackend.service;
 
 import com.todoapp.todoAppBackend.entity.User;
+import com.todoapp.todoAppBackend.repository.TaskRepository;
 import com.todoapp.todoAppBackend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private TaskRepository taskRepository;
 
     //    create account
     public void createAccount(User registerRequest) {
@@ -52,10 +57,11 @@ public class UserService {
         return oldUser;
     }
 
-//    delete account
+//    delete account and all there task
     public void deleteAccount(String username){
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        user.getTasks().forEach(task -> taskRepository.deleteById(task.getId()));
         userRepository.delete(user);
     }
 }
