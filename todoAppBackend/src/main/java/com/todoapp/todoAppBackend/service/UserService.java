@@ -4,6 +4,7 @@ import com.todoapp.todoAppBackend.entity.User;
 import com.todoapp.todoAppBackend.repository.TaskRepository;
 import com.todoapp.todoAppBackend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,28 +17,34 @@ public class UserService {
     @Autowired
     private TaskRepository taskRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     //    create account
     public void createAccount(User registerRequest) {
         String username = registerRequest.getUsername() != null ? registerRequest.getUsername().trim() : "";
         String password = registerRequest.getPassword() != null ? registerRequest.getPassword().trim() : "";
-        if (registerRequest.getUsername().trim().isEmpty() && registerRequest.getPassword().trim().isEmpty()) {
+        if (username.isEmpty() || password.isEmpty()) {
             throw new IllegalArgumentException("Username or Password can't be empty");
         }
         if (userRepository.existsByUsername(registerRequest.getUsername())) {
             throw new IllegalArgumentException("Username already exists");
         }
         registerRequest.setUsername(username);
-        registerRequest.setPassword(password);
+        registerRequest.setPassword(passwordEncoder.encode(password));
         userRepository.save(registerRequest);
     }
 
     //    login
     public User loginAccount(User loginRequest) {
-        if (loginRequest.getUsername().trim().isEmpty() && loginRequest.getPassword().trim().isEmpty()) {
+        if (loginRequest.getUsername() == null || loginRequest.getUsername().trim().isEmpty() ||
+                loginRequest.getPassword() == null || loginRequest.getPassword().trim().isEmpty()) {
             throw new IllegalArgumentException("Username or Password can't be empty");
         }
-        User user =userRepository.findByUsername(loginRequest.getUsername()).orElseThrow(() -> new IllegalArgumentException("User not found"));
-        if (!loginRequest.getPassword().equals(user.getPassword())){
+
+        User user =userRepository.findByUsername(loginRequest.getUsername())
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
             throw new IllegalArgumentException("Password is wrong");
         }
         return user;
@@ -47,11 +54,15 @@ public class UserService {
     public User updateAccount(String username, User updateRequest) {
         User oldUser = userRepository.findByUsername(username.trim())
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
-        if (updateRequest.getUsername() != null) {
-            oldUser.setUsername(!updateRequest.getUsername().trim().isEmpty() ? updateRequest.getUsername().trim() : oldUser.getUsername());
+        // Update username only if provided
+        if (updateRequest.getUsername() != null && !updateRequest.getUsername().trim().isEmpty()) {
+            oldUser.setUsername(updateRequest.getUsername().trim());
         }
-        if (updateRequest.getPassword() != null) {
-            oldUser.setPassword(!updateRequest.getPassword().trim().isEmpty() ? updateRequest.getPassword().trim() : oldUser.getPassword());
+
+        // Update password only if provided
+        if (updateRequest.getPassword() != null && !updateRequest.getPassword().trim().isEmpty()) {
+            String encodedPassword = passwordEncoder.encode(updateRequest.getPassword().trim());
+            oldUser.setPassword(encodedPassword);
         }
         userRepository.save(oldUser);
         return oldUser;

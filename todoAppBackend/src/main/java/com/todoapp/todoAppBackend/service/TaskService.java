@@ -72,5 +72,6 @@ public class TaskService {
         boolean removed = user.getTasks().removeIf(x->x.getId().equals(id));
         if (!removed) throw new IllegalArgumentException("task not found");
         taskRepository.deleteById(id);
+        userRepository.save(user);
     }
 }
