@@ -18,10 +18,10 @@ Users can create an account, log in securely, and manage their personal to-do li
 - **Status Tracking**: Mark tasks as complete or incomplete.
 
 ## Tech Stack
-- **Backend:** Java, Spring Boot, Spring Security ,Spring Data MongoDb, Maven.
+- **Backend:** Java, Spring Boot, Spring Security, jwt, Spring Data MongoDb, Maven.
 - **Frontend:** React.js, React Router DOM, Axios, React Hot Toast.
 - **Database:** MongoDB.
-- **Tools:** Git, VS Code, Postman.
+- **Tools:** Git, VS Code, Intellij, Postman.
 
 ## Backend Project Structure
 ```
