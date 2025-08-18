@@ -40,3 +40,32 @@ todoAppBackend/build/
 
 ### VS Code ###
 todoAppBackend/.vscode/
+
+
+# ==============================
+# Frontend (React)
+# ==============================
+# Logs
+todoAppFrontend/logs
+todoAppFrontend/*.log
+todoAppFrontend/npm-debug.log*
+todoAppFrontend/yarn-debug.log*
+todoAppFrontend/yarn-error.log*
+todoAppFrontend/pnpm-debug.log*
+todoAppFrontend/lerna-debug.log*
+
+todoAppFrontend/node_modules
+todoAppFrontend/dist
+todoAppFrontend/dist-ssr
+todoAppFrontend/*.local
+
+# Editor directories and files
+todoAppFrontend/.vscode/*
+!todoAppFrontend/.vscode/extensions.json
+todoAppFrontend/.idea
+todoAppFrontend/.DS_Store
+todoAppFrontend/*.suo
+todoAppFrontend/*.ntvs*
+todoAppFrontend/*.njsproj
+todoAppFrontend/*.sln
+todoAppFrontend/*.sw?
