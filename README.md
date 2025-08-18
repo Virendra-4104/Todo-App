@@ -9,6 +9,7 @@ Users can create an account, log in securely, and manage their personal to-do li
 - Backend Project Structure
 - API Endpoints
 - Frontend Libraries
+- Screenshots
 
 ## Features
 - **User Authentication**: Users can sign up and log in securely.
@@ -82,4 +83,15 @@ todoAppBackend/
 - **React Hot Toast** → For showing success/error notifications.  
 
 > 💡 **Note:**
->the frontend create with the help of ai. or say I only create this simple design or fix some code. and all code generate by chatgpt.
+>the frontend create with the help of ai. or say I only create this simple design or fix some code. and all frontend code generate by chatgpt.
+
+## Screenshots
+
+### Login Page
+![Login Page](screenshot/login.png)
+
+### Dashboard
+![Dashboard](screenshot/dashboard.png)
+
+### Update
+![Update](screenshot/update.png)
